@@ -1,0 +1,33 @@
+/* * {
+  border: solid 1px red;
+} */
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  font-size: 50px;
+  text-align: center;
+  color: green;
+  margin-bottom: 20px;
+}
+
+#container {
+  display: block;
+  font-size: 50px;
+  text-align: center;
+  border-top: 2px green solid;
+}
+
+#options {
+  text-align: center;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#container {
+  padding: 20%;
+}
