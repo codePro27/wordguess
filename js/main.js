@@ -28,6 +28,7 @@ window.onload = function() {
   optElem.text = "set" + (i+1);
   setElement.appendChild(optElem);
   changeContent();
+
 }
 };
 
@@ -37,36 +38,13 @@ changeContent();
 });
 
 document.addEventListener("keypress",function getInput(event){
-//   console.log("function here");
-//   console.log(event.key);
-// if(event.key === "Enter"){
   changeContent();
-// }
+
 });
 
 function changeContent()
 {
-var setOptVal = setElement.options[setElement.selectedIndex].value;
-var randOptVal = randElement.options[randElement.selectedIndex].value;
-
-if(setOptVal === "all" && randOptVal === "jumble") {
-  getSet = getRandomInt(listLength);
-  getItem = getRandomInt(list[getSet].length);
-}else if(setOptVal !== "all" && randOptVal === "jumble") {
-  getSet = setOptVal - 1;
-  getItem = getRandomInt(list[getSet].length);
-}else if(setOptVal !== "all" && randOptVal === "nojumble") {
-  getSet = setOptVal - 1;
-  setItemNoJumble();
-}else if(setOptVal === "all" && randOptVal === "nojumble") {
-  // getSet = getRandomInt(listLength);
-  setItemNoJumble();
-}
-
-// // getSet = getRandomInt(listLength);
-// setSetOption();
-// // console.log("getSet = "+ getSet);
-// setRandomOption();
+setGetSetOptions();
 console.log("getSet = "+ getSet);
 console.log("getItem = "+ getItem);
 setWord(getSet, getItem);
@@ -77,74 +55,48 @@ function setWord(x, y){
 }
 
 setElement.addEventListener("change", function(){
-  var setOptVal = setElement.options[setElement.selectedIndex].value;
-  var randOptVal = randElement.options[randElement.selectedIndex].value;
-  if(setOptVal === "all" && randOptVal === "nojumble") {
-    getSet = 0;
-    getItem=-1;
-  }
+  initSets();
 });
 
 randElement.addEventListener("change", function(){
-  getItem=-1;
-  getSet=0;
+  initSets();
 });
 
-// function setSetOption() {
-//     switch (setElement.options[setElement.selectedIndex].value) {
-//     case "all":
-//       getSet = getRandomInt(listLength);
-//       break;
-//     default:
-//       getSet = setElement.selectedIndex - 1;
-//   }
-// }
-//
-// function setRandomOption() {
-//
-//     switch (randElement.options[randElement.selectedIndex].value) {
-//     case "jumble":
-//       getItem = getRandomInt(list[getSet].length);
-//       break;
-//     case "nojumble":
-//       getItem = setElement.selectedIndex - 1;
-//   }
-// }
+function initSets(){
+  getItem=-1;
+  getSet=0;
+}
 
-function setItemNoJumble(){
+function setGetSetOptions(){
   var setOptVal = setElement.options[setElement.selectedIndex].value;
   var randOptVal = randElement.options[randElement.selectedIndex].value;
 
-  if(setOptVal==="all"){
-    if(getItem === list[getSet].length - 1) {
-      getItem=0;
-      if(getSet === listLength-1) {
-        getSet=0;
-      }else {
-        getSet++;
+  if(setOptVal !== "all") {
+    getSet = setOptVal - 1;
+    if(randOptVal === "jumble"){
+      getItem = getRandomInt(list[getSet].length);
+    }else{
+      if(getItem === list[getSet].length - 1) {
+        getItem=0
+      }else{
+        getItem++
       }
-    }else{
-      getItem++;
     }
-
-  }else{
-    if(getItem === list[getSet].length - 1) {
-      getItem=0
+  }else {
+    if(randOptVal === "jumble"){
+      getSet = getRandomInt(listLength);
+      getItem = getRandomInt(list[getSet].length);
     }else{
-      getItem++
+      if(getItem === list[getSet].length - 1) {
+        getItem=0;
+        if(getSet === listLength-1) {
+          getSet=0;
+        }else {
+          getSet++;
+        }
+      }else{
+        getItem++;
+      }
     }
   }
-
-    // if(getItem === list[getSet].length - 1) {
-    //   getItem = 0;
-    //   if (setOptVal==="all"){
-    //     if(getSet===listLength-1){
-    //       getSet=0;
-    //     }else{
-    //       getSet++;
-    //     }
-    //   }
-    // }else {
-    //   getItem++
-    // }
 }
