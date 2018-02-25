@@ -16,6 +16,9 @@ let getSet;
 let getItem;
 let divCont= document.getElementById("container")
 
+const isRandomOptJumble = () => randElement.options[randElement.selectedIndex].value === "jumble";
+const isSetOptAll = () => setElement.options[setElement.selectedIndex].value === "all";
+
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
@@ -44,7 +47,8 @@ document.addEventListener("keypress",function getInput(event){
 
 function changeContent()
 {
-setGetSetOptions();
+setSetValue();
+setItemValue();
 console.log("getSet = "+ getSet);
 console.log("getItem = "+ getItem);
 setWord(getSet, getItem);
@@ -67,36 +71,24 @@ function initSets(){
   getSet=0;
 }
 
-function setGetSetOptions(){
-  var setOptVal = setElement.options[setElement.selectedIndex].value;
-  var randOptVal = randElement.options[randElement.selectedIndex].value;
-
-  if(setOptVal !== "all") {
-    getSet = setOptVal - 1;
-    if(randOptVal === "jumble"){
-      getItem = getRandomInt(list[getSet].length);
-    }else{
-      if(getItem === list[getSet].length - 1) {
-        getItem=0
-      }else{
-        getItem++
-      }
+function setSetValue(){
+  if(isSetOptAll()) {
+    if(isRandomOptJumble())
+      getSet = getRandomInt(list.length);
+    else
+      if(getItem === list[getSet].length - 1)
+        (getSet === listLength-1) ? getSet=0 : getSet++
     }
-  }else {
-    if(randOptVal === "jumble"){
-      getSet = getRandomInt(listLength);
-      getItem = getRandomInt(list[getSet].length);
-    }else{
-      if(getItem === list[getSet].length - 1) {
-        getItem=0;
-        if(getSet === listLength-1) {
-          getSet=0;
-        }else {
-          getSet++;
-        }
-      }else{
-        getItem++;
-      }
-    }
+  else {
+    getSet = setElement.selectedIndex - 1;
   }
+}
+
+
+
+function setItemValue() {
+  if(isRandomOptJumble())
+    getItem = getRandomInt(list[getSet].length);
+  else
+    (getItem === list[getSet].length - 1) ? getItem=0 : getItem++;
 }
